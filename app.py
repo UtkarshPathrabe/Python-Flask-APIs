@@ -5,6 +5,7 @@ from bisect import bisect_left
 from collections import defaultdict
 
 app = Flask(__name__)
+app.config['DEBUG'] = True
 
 def readTransactionDataFromCSV(fileName):
     data = {}
