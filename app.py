@@ -78,54 +78,57 @@ def getTransactionDetails(transactionId):
     '''
     Provides transaction details of a given Transaction ID
     '''
-    if not transactionId:
-        return '<p>Error: Transaction ID not provided. Please provide Transaction ID.</p>'
-    transactionId = int(transactionId)
-    if transactionId in transactions:
-        transactionDetails = transactions[transactionId]
-        return jsonify(transactionDetails)
-    else:
-        return '<p>Error: Invalid Transaction ID.</p>'
+    try:
+        transactionId = int(transactionId)
+        if transactionId in transactions:
+            transactionDetails = transactions[transactionId]
+            return jsonify(transactionDetails)
+        else:
+            return '<p>Error: Invalid Transaction ID.</p>'
+    except TypeError:
+        return '<p>Error: Transaction ID not provided. Please provide Transaction ID (an Integer).</p>'
 
 @app.route('/assignment/transactionSummaryByProducts/<n>', methods = ['GET'])
 def getTransactionSummaryByProducts(n):
     '''
-    Provides Summary by Products for the transactions during the last n days
+    Provides Summary by Products for the transactions during the last N days
     '''
-    if not n:
-        return '<p>Error: Proper parameter not provided. Please provide the last number of days value for which you want the summary.</p>'
-    n = int(n)
-    validDate = datetime.now() - timedelta(days = n)
-    app.logger.info('Fetching Summary of Transactions from {}'.format(validDate))
-    keys = [data['transactionDatetime'] for data in transactionsSummarySortedByDatetime]
-    startIndex = bisect_left(keys, validDate)
-    summaryMap = defaultdict(float)
-    for index in range(startIndex, len(transactionsSummarySortedByDatetime)):
-        summaryMap[products[transactionsSummarySortedByDatetime[index]['productId']]['productName']] += transactionsSummarySortedByDatetime[index]['transactionAmount']
-    summary = []
-    for productName, totalAmount in summaryMap.items():
-        summary.append({'productName': productName, 'totalAmount': totalAmount})
-    return jsonify({'summary': summary})
+    try:
+        n = int(n)
+        validDate = datetime.now() - timedelta(days = n)
+        app.logger.info('Fetching Summary of Transactions from {}'.format(validDate))
+        keys = [data['transactionDatetime'] for data in transactionsSummarySortedByDatetime]
+        startIndex = bisect_left(keys, validDate)
+        summaryMap = defaultdict(float)
+        for index in range(startIndex, len(transactionsSummarySortedByDatetime)):
+            summaryMap[products[transactionsSummarySortedByDatetime[index]['productId']]['productName']] += transactionsSummarySortedByDatetime[index]['transactionAmount']
+        summary = []
+        for productName, totalAmount in summaryMap.items():
+            summary.append({'productName': productName, 'totalAmount': totalAmount})
+        return jsonify({'summary': summary})
+    except TypeError:
+        return '<p>Error: Proper parameter not provided. Please provide the last number of days value (an Integer) for which you want the summary.</p>'
 
 @app.route('/assignment/transactionSummaryByManufacturingCity/<n>', methods = ['GET'])
 def getTransactionSummaryByManufacturingCity(n):
     '''
-    Provides Summary by Manufacturing City for the transactions during the last n days
+    Provides Summary by Manufacturing City for the transactions during the last N days
     '''
-    if not n:
-        return '<p>Error: Proper parameter not provided. Please provide the last number of days value for which you want the summary.</p>'
-    n = int(n)
-    validDate = datetime.now() - timedelta(days = n)
-    app.logger.info('Fetching Summary of Transactions from {}'.format(validDate))
-    keys = [data['transactionDatetime'] for data in transactionsSummarySortedByDatetime]
-    startIndex = bisect_left(keys, validDate)
-    summaryMap = defaultdict(float)
-    for index in range(startIndex, len(transactionsSummarySortedByDatetime)):
-        summaryMap[products[transactionsSummarySortedByDatetime[index]['productId']]['productManufacturingCity']] += transactionsSummarySortedByDatetime[index]['transactionAmount']
-    summary = []
-    for cityName, totalAmount in summaryMap.items():
-        summary.append({'cityName': cityName, 'totalAmount': totalAmount})
-    return jsonify({'summary': summary})
+    try:    
+        n = int(n)
+        validDate = datetime.now() - timedelta(days = n)
+        app.logger.info('Fetching Summary of Transactions from {}'.format(validDate))
+        keys = [data['transactionDatetime'] for data in transactionsSummarySortedByDatetime]
+        startIndex = bisect_left(keys, validDate)
+        summaryMap = defaultdict(float)
+        for index in range(startIndex, len(transactionsSummarySortedByDatetime)):
+            summaryMap[products[transactionsSummarySortedByDatetime[index]['productId']]['productManufacturingCity']] += transactionsSummarySortedByDatetime[index]['transactionAmount']
+        summary = []
+        for cityName, totalAmount in summaryMap.items():
+            summary.append({'cityName': cityName, 'totalAmount': totalAmount})
+        return jsonify({'summary': summary})
+    except TypeError:
+        return '<p>Error: Proper parameter not provided. Please provide the last number of days value (an Integer) for which you want the summary.</p>'
 
 @app.errorhandler(404)
 def page_not_found(e):
