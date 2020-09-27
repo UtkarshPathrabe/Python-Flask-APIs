@@ -64,14 +64,20 @@ def readProductReferenceDataFromCSV(fileName):
         app.logger.info('Read {} lines from {}'.format(lineCount, fileName))
     return data
 
-products = readProductReferenceDataFromCSV('ProductReference.csv')
+products = readProductReferenceDataFromCSV('productReference.csv')
 
 @app.route('/', methods = ['GET'])
 def home():
+    '''
+    Creates the Home Page
+    '''
     return '<h1>Transaction Retrieval</h1><p>This provides prototype APIs for retrieving transaction data and its various summaries.</p>'
 
 @app.route('/assignment/transaction/<transactionId>', methods = ['GET'])
 def getTransactionDetails(transactionId):
+    '''
+    Provides transaction details of a given Transaction ID
+    '''
     if not transactionId:
         return '<p>Error: Transaction ID not provided. Please provide Transaction ID.</p>'
     transactionId = int(transactionId)
@@ -83,6 +89,9 @@ def getTransactionDetails(transactionId):
 
 @app.route('/assignment/transactionSummaryByProducts/<n>', methods = ['GET'])
 def getTransactionSummaryByProducts(n):
+    '''
+    Provides Summary by Products for the transactions during the last n days
+    '''
     if not n:
         return '<p>Error: Proper parameter not provided. Please provide the last number of days value for which you want the summary.</p>'
     n = int(n)
@@ -100,6 +109,9 @@ def getTransactionSummaryByProducts(n):
 
 @app.route('/assignment/transactionSummaryByManufacturingCity/<n>', methods = ['GET'])
 def getTransactionSummaryByManufacturingCity(n):
+    '''
+    Provides Summary by Manufacturing City for the transactions during the last n days
+    '''
     if not n:
         return '<p>Error: Proper parameter not provided. Please provide the last number of days value for which you want the summary.</p>'
     n = int(n)
@@ -117,6 +129,9 @@ def getTransactionSummaryByManufacturingCity(n):
 
 @app.errorhandler(404)
 def page_not_found(e):
+    '''
+    Error handling
+    '''
     return '<h1>Not Found</h1><p>The resource could not be found.</p>', 404
 
 app.run()
