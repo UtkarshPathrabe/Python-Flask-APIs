@@ -10,6 +10,7 @@ This is an in-memory application, so persistent storage is not used.
 
 Provides transaction details of a given Transaction ID.<br />
 Input needs to be a valid Transaction ID `<transactionId>` (an Integer) else it will show error.<br />
+e.g. `http://localhost:5000/assignment/transaction/1` <br />
 Output JSON format:<br />
 
 ```
@@ -25,6 +26,7 @@ Output JSON format:<br />
 
 Provides Summary by Products for the transactions during the last N days.<br />
 Input needs to be a valid number of days `<lastNDays>` (an Integer) else it will show error.<br />
+e.g. `http://localhost:5000/assignment/transactionSummaryByProducts/4`<br />
 Output JSON format:<br />
 
 ```
@@ -66,6 +68,7 @@ Output JSON format:<br />
 
 Provides Summary by Manufacturing City for the transactions during the last N days.<br />
 Input needs to be a valid number of days `<lastNDays>` (an Integer) else it will show error.<br />
+e.g. `http://localhost:5000/assignment/transactionSummaryByManufacturingCity/4`<br />
 Output JSON format:<br />
 
 ```
